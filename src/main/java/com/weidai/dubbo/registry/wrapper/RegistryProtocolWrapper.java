@@ -30,9 +30,9 @@ public class RegistryProtocolWrapper implements Protocol {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistryProtocolWrapper.class);
 
-    private static final String DUBBO_PROTOCOL = "dubbo";
+    public static final String DUBBO_PROTOCOL = "dubbo";
 
-    private static final String METHOD_SIGNATURE = "methodSignatures";
+    public static final String METHOD_SIGNATURE = "methodSignatures";
 
     private final Protocol protocol;
 
@@ -71,7 +71,7 @@ public class RegistryProtocolWrapper implements Protocol {
     /**
      * 方法签名
      */
-    static class MethodSignature {
+    public static class MethodSignature {
 
         private String methodName;
 
