@@ -69,42 +69,6 @@ public class RegistryProtocolWrapper implements Protocol {
     }
 
     /**
-     * 方法签名
-     */
-    public static class MethodSignature {
-
-        private String methodName;
-
-        private List<String> paramTypes;
-
-        private String returnType;
-
-        public String getMethodName() {
-            return methodName;
-        }
-
-        public void setMethodName(String methodName) {
-            this.methodName = methodName;
-        }
-
-        public List<String> getParamTypes() {
-            return paramTypes;
-        }
-
-        public void setParamTypes(List<String> paramTypes) {
-            this.paramTypes = paramTypes;
-        }
-
-        public String getReturnType() {
-            return returnType;
-        }
-
-        public void setReturnType(String returnType) {
-            this.returnType = returnType;
-        }
-    }
-
-    /**
      * 生成接口所有method的完整签名
      * 
      * @param interfaceClazz
