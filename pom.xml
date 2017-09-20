@@ -87,12 +87,5 @@
             <version>${junit_version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.weidai</groupId>
-            <artifactId>ucore-facade</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

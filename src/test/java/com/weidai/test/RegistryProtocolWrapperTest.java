@@ -5,7 +5,6 @@ package com.weidai.test;
 
 import com.alibaba.dubbo.common.URL;
 import com.weidai.dubbo.registry.wrapper.RegistryProtocolWrapper;
-import com.weidai.ucore.facade.api.UserServiceFacade;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -19,7 +18,7 @@ public class RegistryProtocolWrapperTest {
     public void getMethodSignaturesTest() throws Exception {
         Method method = RegistryProtocolWrapper.class.getDeclaredMethod("getMethodSignatures", Class.class);
         method.setAccessible(true);
-        System.out.println(method.invoke(null, UserServiceFacade.class));
+        System.out.println(method.invoke(null, Foo.class));
     }
 
     @Test
@@ -29,4 +28,5 @@ public class RegistryProtocolWrapperTest {
         String methodSignatures = URL.valueOf(str).getParameterAndDecoded(RegistryProtocolWrapper.METHOD_SIGNATURE);
         System.out.println(methodSignatures);
     }
+
 }

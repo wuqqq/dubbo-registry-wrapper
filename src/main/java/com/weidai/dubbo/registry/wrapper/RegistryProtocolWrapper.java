@@ -88,6 +88,12 @@ public class RegistryProtocolWrapper implements Protocol {
                     for (Type type : paramTypes) {
                         paramTypeList.add(getCompleteTypeSignature(type));
                     }
+                    // 处理varArgs，eg: String...
+                    if (method.isVarArgs()) {
+                        String lastParamType = paramTypeList.remove(paramTypeList.size() - 1);
+                        lastParamType = lastParamType.substring(0, lastParamType.length() - 2) + "...";
+                        paramTypeList.add(lastParamType);
+                    }
                     methodSignature.setParamTypes(paramTypeList);
                 }
                 methodSignature.setReturnType(getCompleteTypeSignature(method.getGenericReturnType()));
@@ -129,7 +135,7 @@ public class RegistryProtocolWrapper implements Protocol {
                 builder.append("<");
                 first = false;
             } else {
-                builder.append(",");
+                builder.append(", ");
             }
             // noinspection Duplicates
             if (type instanceof ParameterizedType) {
