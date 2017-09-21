@@ -122,7 +122,6 @@ public class RegistryProtocolWrapper implements Protocol {
                 builder.append(", ");
             }
             first = false;
-            // noinspection Duplicates
             if (type instanceof ParameterizedType) {
                 builder.append(((Class<?>) ((ParameterizedType) type).getRawType()).getName());
                 Type[] subArgTypes = ((ParameterizedType) type).getActualTypeArguments();
