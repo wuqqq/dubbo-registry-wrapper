@@ -29,4 +29,9 @@ public class RegistryProtocolWrapperTest {
         System.out.println(methodSignatures);
     }
 
+    @Test
+    public void test3(){
+        Method method = Foo.class.getMethods()[0];
+        System.out.println(method.toGenericString());
+    }
 }

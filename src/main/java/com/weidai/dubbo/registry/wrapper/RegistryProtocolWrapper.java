@@ -83,10 +83,13 @@ public class RegistryProtocolWrapper implements Protocol {
                 MethodSignature methodSignature = new MethodSignature();
                 methodSignature.setMethodName(method.getName());
                 Type[] paramTypes = method.getGenericParameterTypes();
+                StringBuilder sb = new StringBuilder();
                 if (paramTypes.length > 0) {
                     List<String> paramTypeList = new ArrayList<>(paramTypes.length);
                     for (Type type : paramTypes) {
-                        paramTypeList.add(getCompleteTypeSignature(type));
+                        resolveTypes(new Type[] { type }, sb);
+                        paramTypeList.add(sb.substring(1, sb.length() - 1));
+                        sb.delete(0, sb.length());
                     }
                     // 处理varArgs，eg: String...
                     if (method.isVarArgs()) {
@@ -96,7 +99,8 @@ public class RegistryProtocolWrapper implements Protocol {
                     }
                     methodSignature.setParamTypes(paramTypeList);
                 }
-                methodSignature.setReturnType(getCompleteTypeSignature(method.getGenericReturnType()));
+                resolveTypes(new Type[] { method.getGenericReturnType() }, sb);
+                methodSignature.setReturnType(sb.substring(1, sb.length() - 1));
                 list.add(methodSignature);
             }
             jsonStr = JSON.toJSONString(list);
@@ -104,51 +108,34 @@ public class RegistryProtocolWrapper implements Protocol {
         return jsonStr;
     }
 
-    private static String getCompleteTypeSignature(Type type) {
-        StringBuilder builder = new StringBuilder();
-        // noinspection Duplicates
-        if (type instanceof ParameterizedType) {
-            builder.append(((Class<?>) ((ParameterizedType) type).getRawType()).getName());
-            Type[] subArgTypes = ((ParameterizedType) type).getActualTypeArguments();
-            appendArgTypes(subArgTypes, builder);
-        } else {
-            Class<?> clazz = (Class<?>) type;
-            if (clazz.isArray()) {
-                builder.append(clazz.getComponentType().getName()).append("[]");
-            } else {
-                builder.append(clazz.getName());
-            }
-        }
-        return builder.toString();
-    }
-
     /**
-     * 递归查找泛型类型
+     * 递归解析类型
      * 
      * @param argTypes
      * @param builder
      */
-    private static void appendArgTypes(Type[] argTypes, StringBuilder builder) {
+    private static void resolveTypes(Type[] argTypes, StringBuilder builder) {
         boolean first = true;
+        builder.append("<");
         for (Type type : argTypes) {
-            if (first) {
-                builder.append("<");
-                first = false;
-            } else {
+            if (!first) {
                 builder.append(", ");
             }
+            first = false;
             // noinspection Duplicates
             if (type instanceof ParameterizedType) {
                 builder.append(((Class<?>) ((ParameterizedType) type).getRawType()).getName());
                 Type[] subArgTypes = ((ParameterizedType) type).getActualTypeArguments();
-                appendArgTypes(subArgTypes, builder);
-            } else {
+                resolveTypes(subArgTypes, builder);
+            } else if (type instanceof Class<?>) {
                 Class<?> clazz = (Class<?>) type;
                 if (clazz.isArray()) {
                     builder.append(clazz.getComponentType().getName()).append("[]");
                 } else {
                     builder.append(clazz.getName());
                 }
+            } else {
+                builder.append(type.toString());
             }
         }
         builder.append(">");
