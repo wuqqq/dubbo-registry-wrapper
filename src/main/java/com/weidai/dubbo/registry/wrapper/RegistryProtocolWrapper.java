@@ -5,6 +5,7 @@ package com.weidai.dubbo.registry.wrapper;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
+import com.alibaba.dubbo.common.utils.ReflectUtils;
 import com.alibaba.dubbo.rpc.Exporter;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Protocol;
@@ -127,12 +128,7 @@ public class RegistryProtocolWrapper implements Protocol {
                 Type[] subArgTypes = ((ParameterizedType) type).getActualTypeArguments();
                 resolveTypes(subArgTypes, builder);
             } else if (type instanceof Class<?>) {
-                Class<?> clazz = (Class<?>) type;
-                if (clazz.isArray()) {
-                    builder.append(clazz.getComponentType().getName()).append("[]");
-                } else {
-                    builder.append(clazz.getName());
-                }
+                builder.append(ReflectUtils.getName((Class<?>) type));
             } else {
                 builder.append(type.toString());
             }
