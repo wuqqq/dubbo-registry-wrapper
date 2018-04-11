@@ -1,6 +1,3 @@
-/**
- * Copyright (C), 2011-2017, 微贷网.
- */
 package com.weidai.dubbo.registry.wrapper;
 
 import java.util.Arrays;
